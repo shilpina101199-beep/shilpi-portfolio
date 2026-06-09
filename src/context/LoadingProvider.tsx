@@ -24,7 +24,18 @@ export const LoadingProvider = ({ children }: PropsWithChildren) => {
     setIsLoading,
     setLoading,
   };
-  useEffect(() => {}, [loading]);
+  useEffect(() => {
+    if (!isLoading) return;
+
+    const fallback = window.setTimeout(() => {
+      document.body.style.overflowY = "auto";
+      document.getElementsByTagName("main")[0]?.classList.add("main-active");
+      setLoading(100);
+      setIsLoading(false);
+    }, 9000);
+
+    return () => window.clearTimeout(fallback);
+  }, [isLoading]);
 
   return (
     <LoadingContext.Provider value={value as LoadingType}>

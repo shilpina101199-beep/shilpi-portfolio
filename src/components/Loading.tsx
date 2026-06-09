@@ -20,17 +20,28 @@ const Loading = ({ percent }: { percent: number }) => {
   }
 
   useEffect(() => {
-    import("./utils/initialFX").then((module) => {
-      if (isLoaded) {
-        setClicked(true);
+    if (!isLoaded) return;
+
+    setClicked(true);
+    const finishLoading = () => {
+      document.body.style.overflowY = "auto";
+      document.getElementsByTagName("main")[0]?.classList.add("main-active");
+      setIsLoading(false);
+    };
+
+    import("./utils/initialFX")
+      .then((module) => {
         setTimeout(() => {
           if (module.initialFX) {
             module.initialFX();
           }
           setIsLoading(false);
         }, 900);
-      }
-    });
+      })
+      .catch((error) => {
+        console.warn("Initial animation failed.", error);
+        setTimeout(finishLoading, 900);
+      });
   }, [isLoaded]);
 
   function handleMouseMove(e: React.MouseEvent<HTMLElement>) {

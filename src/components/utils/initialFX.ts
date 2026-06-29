@@ -5,12 +5,15 @@ import { smoother } from "../Navbar";
 export function initialFX() {
   document.body.style.overflowY = "auto";
   smoother?.paused(false);
-  document.getElementsByTagName("main")[0].classList.add("main-active");
+  document.getElementsByTagName("main")[0]?.classList.add("main-active");
   gsap.to("body", {
     backgroundColor: "#0b080c",
     duration: 0.5,
     delay: 1,
   });
+
+  const landingIntro = document.querySelector(".landing-intro");
+  if (!landingIntro) return;
 
   var landingText = new SplitText(
     [".landing-info h3", ".landing-intro h2", ".landing-intro h1"],
@@ -72,12 +75,20 @@ export function initialFX() {
     }
   );
 
-  var landingText3 = new SplitText(".landing-h2-info-1", TextProps);
-  var landingText4 = new SplitText(".landing-h2-1", TextProps);
-  var landingText5 = new SplitText(".landing-h2-2", TextProps);
+  const h2Info1 = document.querySelector(".landing-h2-info-1");
+  const h2One = document.querySelector(".landing-h2-1");
+  const h2Two = document.querySelector(".landing-h2-2");
 
-  LoopText(landingText2, landingText3);
-  LoopText(landingText4, landingText5);
+  if (h2Info1) {
+    var landingText3 = new SplitText(".landing-h2-info-1", TextProps);
+    LoopText(landingText2, landingText3);
+  }
+
+  if (h2One && h2Two) {
+    var landingText4 = new SplitText(".landing-h2-1", TextProps);
+    var landingText5 = new SplitText(".landing-h2-2", TextProps);
+    LoopText(landingText4, landingText5);
+  }
 }
 
 function LoopText(Text1: SplitText, Text2: SplitText) {

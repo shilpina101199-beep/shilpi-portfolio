@@ -19,7 +19,11 @@ const MainContainer = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     const resizeHandler = () => {
-      setSplitText();
+      try {
+        setSplitText();
+      } catch (error) {
+        console.warn("Split text setup failed.", error);
+      }
       setIsDesktopView(window.innerWidth > 1024);
     };
     resizeHandler();

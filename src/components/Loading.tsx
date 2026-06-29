@@ -32,8 +32,14 @@ const Loading = ({ percent }: { percent: number }) => {
     import("./utils/initialFX")
       .then((module) => {
         setTimeout(() => {
-          if (module.initialFX) {
-            module.initialFX();
+          try {
+            if (module.initialFX) {
+              module.initialFX();
+            }
+          } catch (error) {
+            console.warn("Initial animation failed.", error);
+            finishLoading();
+            return;
           }
           setIsLoading(false);
         }, 900);
